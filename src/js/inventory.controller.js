@@ -30,6 +30,11 @@ angular.module('inventory')
        return (((item.price) - (item.discount))*1.057);
     };
 
+    vm.sortBy = function sortBy(order){
+      return(sortBy = (sortBy))
+
+    }
+
   }
 
 

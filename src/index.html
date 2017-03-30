@@ -6,32 +6,53 @@
     <title>Shopular</title>
   </head>
   <body>
-    <h1>Shopular</h1>
+    <h1>ShopulaR</h1>
 
     <main ng-controller='InventoryController as invCtrl'>
 
-      <!-- <ul>
-        <li ng-repeat='item in invCtrl.inventory'>
-          <h3>Name: {{item.name}} </h3>
-          <p>Price: {{item.price}}</p>
-          <p>Quantity: {{item.quantity}}</p>
-          <p>Color: {{item.color}}</p>
-          <p>Sale Price: {{invCtrl.getPostSalePrice(item)}}</p>
 
-      </ul> -->
+      <form name='addAnItem' ng-submit='additem.$valid && invCtrl.addItem(invCtrl.newItem)' novalidate>
 
+        <p ng-show='addAnItem.name.$touched && !addAnItem.name.$valid'> You must enter a name </p>   <!-- if form is manipulated -->
+        <input ng-model='invCtrl.newItem.name'      type='text'   name='name'     placeholder='New Item Name'             required ng-model='invCtrl.newItem.name'>
+        <input ng-model='invCtrl.newItem.price'     type='number' name='price'    placeholder='New Item Price'            required ng-model='invCtrl.newItem.price'     min='0'>
+        <input ng-model='invCtrl.newItem.quantity'  type='number' name='quantity' placeholder='New Item Quantity Number'  required ng-model='invCtrl.newItem.quantity'  min='0'>
+        <input ng-model='invCtrl.newItem.color'     type='text'   name='color'    placeholder='New Item Color'            required ng-model='invCtrl.newItem.color'>
+        <input ng-model='invCtrl.newItem.discount'  type='number' name='discount' placeholder='New Item Discount'         required ng-model='invCtrl.newItem.discount'  min='0'>
+
+        <input type='submit' value='add an item'>
+
+        <aside>
+          <button ng-click="sortBy('name')">Sort By Name</button>
+          <span class="sortorder" ng-show="propertyName === 'name' " ng-class="{reverse: reverse}"></span>
+
+          <button ng-click="sortBy('quantity')">Sort By Quantity</button>
+          <span class="sortorder" ng-show="propertyName === 'quantity' " ng-class="{reverse: reverse}"></span>
+
+          <button ng-click="sortBy('price')">Sort By Price</button>
+          <span class="sortorder" ng-show="propertyName === 'price' " ng-class="{reverse: reverse}"></span>
+        </aside>
+
+      </form>
 
       <table class='table table-striped col-lg-8'>
-        <tr>
-            <th>Name </th>
-            <th>Price</th>
-            <th>Sale</th>
+        <thead>
+          <tr>
+            <th href='#' ng-click="invCtrl.changeSort = 'name' ">
+                Name
+            </th>
+            <th href='#' ng-click="invCtrl.sortType = 'price' ">
+                Price
+            </th>
+            <th href='#' ng-click="invCtrl.sortType = 'sale' ">Sale</th>
             <th>Sale Price</th>
-            <th>Quantity</th>
-            <th>Color</th>
+            <th href='#' ng-click="invCtrl.sortType = 'quantity' ">Quantity</th>
+            <th href='#' ng-click="invCtrl.sortType = 'color' ">Color</th>
         </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat='item in invCtrl.inventory | orderBy:invCtrl.sortType:sortReverse'> <!-- | is a filter in angular, || is or -->
 
-        <tr ng-repeat='item in invCtrl.inventory'>
             <td>{{item.name}}</td>
             <td>{{item.price}}</td>
             <td><img src = 'sale.png' ng-show='item.discount > 0'></td>
@@ -39,15 +60,17 @@
             <td>{{item.quantity}}</td>
             <td>{{item.color}}</td>
         </tr>
+      </tbody>
 
 
       </table>
     </main>
 
     <!-- This order of is important -->
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
-        <script src='/src/js/inventory.module.js'></script>
-        <script src='/src/js/inventory.controller.js'></script>
+        <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js'></script>
+        <script src='/js/inventory.module.js'></script>
+        <script src='/js/inventory.controller.js'></script>
+
 
   </body>
 </html>
